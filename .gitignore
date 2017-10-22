@@ -1,0 +1,13 @@
+**/target/
+**/bin/
+**/build
+**/.idea
+.project
+.classpath
+**/.settings/
+.settings/*
+
+.idea/*
+**/.idea/
+shida-parent.iml
+.vscode
