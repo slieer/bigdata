@@ -15,6 +15,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
@@ -24,11 +25,17 @@ import scala.Tuple2;
 @SuppressWarnings("serial")
 public class SchemaOps {
 	public static void main(String[] args) {
-		SparkConf conf = new SparkConf().setMaster("local").setAppName("RDD2DataFrameByProgramatically");
-		JavaSparkContext sc = new JavaSparkContext(conf);
-		SQLContext sqlContext = new SQLContext(sc);
+//		SparkConf conf = new SparkConf().setMaster("local").setAppName("RDD2DataFrameByProgramatically");
+		
+		SparkConf conf = new SparkConf().setMaster("local").setAppName("SparkSQLParquetOps");
+		JavaSparkContext sc1 = new JavaSparkContext(conf);
+		
+		SparkSession spark = SparkSession.builder()
+				.config(conf)
+				.getOrCreate();		
+		SQLContext sqlContext = new SQLContext(spark);
 
-		JavaRDD<Integer> lines = sc.parallelize(Arrays.asList(1, 2, 3, 4, 5));
+		JavaRDD<Integer> lines = sc1.parallelize(Arrays.asList(1, 2, 3, 4, 5));
 		PairFunction<Integer, Integer, Integer> df2 = new PairFunction<Integer, Integer, Integer>() {
 			@Override
 			public Tuple2 call(Integer x) throws Exception {
@@ -65,7 +72,7 @@ public class SchemaOps {
 		Dataset<Row> personsDF = sqlContext.createDataFrame(personsRDD, structType);
 		personsDF.write().parquet("data/test_table/key=1");
 
-		JavaRDD<Integer> lines1 = sc.parallelize(Arrays.asList(6, 7, 8, 9, 10));
+		JavaRDD<Integer> lines1 = sc1.parallelize(Arrays.asList(6, 7, 8, 9, 10));
 		PairFunction<Integer, Integer, Integer> df3 = new PairFunction<Integer, Integer, Integer>() {
 			@Override
 			public Tuple2 call(Integer x) throws Exception {

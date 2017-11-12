@@ -9,6 +9,7 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.SparkSession;
 
 @SuppressWarnings("serial")
 public class SparkSQLParquetOps {
@@ -16,6 +17,8 @@ public class SparkSQLParquetOps {
 	public static void main(String[] args) {
 		SparkConf conf = new SparkConf().setMaster("local").setAppName("SparkSQLParquetOps");
 		JavaSparkContext sc = new JavaSparkContext(conf);
+		
+		SparkSession.builder().getOrCreate();
 		SQLContext sqlContext = new SQLContext(sc);
 		Dataset<Row> usersDF = sqlContext.read().parquet(
 				"E:\\Spark\\Sparkinstanll_package\\Big_Data_Software\\spark-1.6.0-bin-hadoop2.6\\examples\\src\\main\\resources\\users.parquet");

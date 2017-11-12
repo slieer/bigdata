@@ -1,5 +1,8 @@
 package com.zhai.hbase;
 
+import java.nio.ByteBuffer;
+import java.util.List;
+
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Table;
@@ -22,7 +25,9 @@ public class HbaseTest {
 	public static void main(String[] args) throws Exception {
 		createTable();
 		Table tab = HBaseDAO.getHbaseConnection().getTable(TableName.valueOf(tabName));
-		List<Put>puts = Lists.newArrayList(null) 
+		
+		Put row = new Put("row".getBytes());
+		List<Put>puts = Lists.newArrayList(row);
 		tab.put(puts);
 	}
 }
